@@ -1,6 +1,12 @@
-def main():
-    print("Hello from project!")
+from fastapi import FastAPI
+
+app = FastAPI(
+    title="Notification Platform",
+)
 
 
-if __name__ == "__main__":
-    main()
+@app.get("/")
+def root():
+    return {
+        "message": "Notification Platform is running"
+    }
