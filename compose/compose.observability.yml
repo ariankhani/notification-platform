@@ -1,0 +1,5 @@
+name: notification-platform-observability
+
+# Prometheus, Grafana, and log aggregation will be added after the
+# application exposes production metrics and structured logs.
+services: {}

@@ -1,0 +1,32 @@
+name: notification-platform-dev
+
+services:
+  api:
+    image: notification-platform-api:dev
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: development
+    ports:
+      - "${API_PORT:-8000}:8000"
+    env_file:
+      - path: ../.env
+        required: false
+    volumes:
+      - ../app:/app/app
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=2)"
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    init: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
