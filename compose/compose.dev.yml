@@ -1,3 +1,4 @@
+
 name: notification-platform-dev
 
 services:
@@ -12,6 +13,11 @@ services:
     env_file:
       - path: ../.env
         required: false
+    environment:
+      DATABASE_URL: postgresql+psycopg://noti_user:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@postgres:5432/noti_db
+    depends_on:
+      postgres:
+        condition: service_healthy
     volumes:
       - ../app:/app/app
     healthcheck:
@@ -30,3 +36,26 @@ services:
       - no-new-privileges:true
     cap_drop:
       - ALL
+
+  postgres:
+    image: postgres:17-bookworm
+    environment:
+      POSTGRES_USER: noti_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: noti_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U noti_user -d noti_db
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  postgres_data:

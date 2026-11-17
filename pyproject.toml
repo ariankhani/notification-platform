@@ -14,6 +14,8 @@ dependencies = [
     "pwdlib[argon2]>=0.2.1",
     "python-multipart>=0.0.20",
     "passlib>=1.7.4",
+    "psycopg[binary]>=3.3.8",
+    "alembic>=1.20.1",
 ]
 
 [dependency-groups]
@@ -21,4 +23,5 @@ dev = [
     "pytest>=8.4.0",
     "httpx>=0.28.0",
     "ruff>=0.12.0",
+    "pytest-asyncio>=1.4.1.post1",
 ]
