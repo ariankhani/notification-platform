@@ -20,6 +20,7 @@ services:
         condition: service_healthy
     volumes:
       - ../app:/app/app
+      - ../alembic:/app/alembic
     healthcheck:
       test:
         - CMD
