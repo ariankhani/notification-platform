@@ -10,4 +10,5 @@ class User(UserBase, table=True):
 
     id: int | None = Field(default=None, primary_key=True)
     hashed_password: str
+    hashed_refresh_token: str | None = Field(default=None)
     created_at: datetime = Field(default_factory=datetime.utcnow)

@@ -12,7 +12,6 @@ from alembic import context
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
 
 # Import models
-from app.models.user import User
 
 config = context.config
 
@@ -22,7 +21,6 @@ if config.config_file_name is not None:
 target_metadata = SQLModel.metadata
 
 def get_url():
-    # اولویت با متغیر محیطی است
     return os.getenv("DATABASE_URL")
 
 def run_migrations_offline() -> None:

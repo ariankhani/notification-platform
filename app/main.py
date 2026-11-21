@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
+from app.api.endpoints import auth, users
 from app.db.engine import create_db_engine, create_session_factory
 from app.modules.health.router import router as health_router
 
@@ -28,4 +29,8 @@ app = FastAPI(
 def root():
     return {"message": "Notification Platform is running"}
 
+
 app.include_router(health_router)
+
+app.include_router(auth.router)
+app.include_router(users.router)

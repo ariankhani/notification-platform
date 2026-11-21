@@ -34,9 +34,7 @@ def create_access_token(
     now = datetime.now(UTC)
 
     if expires_delta is None:
-        expires_delta = timedelta(
-            minutes=settings.jwt_expiration_minutes
-        )
+        expires_delta = timedelta(minutes=settings.jwt_expiration_minutes)
 
     expire = now + expires_delta
 
@@ -54,7 +52,26 @@ def create_access_token(
     )
 
 
-def decode_access_token(token: str) -> dict[str, Any]:
+def create_refresh_token(subject: str | int) -> str:
+    """Create a JWT refresh token with a longer lifespan (e.g., 7 days)."""
+    now = datetime.now(UTC)
+    expire = now + timedelta(days=7)
+
+    payload: dict[str, Any] = {
+        "sub": str(subject),
+        "iat": now,
+        "exp": expire,
+        "type": "refresh",
+    }
+
+    return jwt.encode(
+        payload,
+        settings.jwt_secret,
+        algorithm=settings.jwt_algorithm,
+    )
+
+
+def decode_jwt_token(token: str) -> dict[str, Any]:
     """Decode and validate a JWT access token."""
 
     return jwt.decode(
