@@ -44,9 +44,12 @@ async def register_user(user_in: UserCreate, session=Depends(get_session)):
     return new_user
 
 
+<<<<<<< HEAD
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
+=======
+>>>>>>> f1a903f (feat(auth): complete JWT auth system with refresh tokens, logout)
 @router.post("/login", response_model=Token)
 async def login(
     form_data: OAuth2PasswordRequestForm = Depends(), session=Depends(get_session)
