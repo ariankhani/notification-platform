@@ -109,3 +109,8 @@ venv.bak/
 .mypy_cache/
 
 .idea/*
+
+
+# Test database
+test.db
+*.db-journal
