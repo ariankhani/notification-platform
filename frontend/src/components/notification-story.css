@@ -1,0 +1,101 @@
+.notification-story .ss-stage {
+  --gutter: 30px;
+  overflow: hidden;
+  border-radius: 26px;
+  background:
+    linear-gradient(rgba(21, 122, 99, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(21, 122, 99, 0.055) 1px, transparent 1px),
+    #edf2ed;
+  background-size: 28px 28px;
+}
+
+.story-window {
+  position: absolute;
+  top: var(--gutter);
+  left: var(--gutter);
+  width: 530px;
+  height: 480px;
+  box-shadow: var(--ss-shadow-hero);
+}
+
+.story-window .ss-window__body { display: flex; }
+
+.story-sidebar {
+  width: 126px;
+  flex: none;
+  padding: 18px 12px;
+  border-right: 1px solid var(--ss-line);
+  background: #f5f7f4;
+}
+
+.story-wordmark {
+  display: block;
+  margin: 0 8px 22px;
+  color: var(--ss-text-strong);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.story-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 32px;
+  padding: 0 8px;
+  border-radius: 7px;
+  color: var(--ss-text-faint);
+  font-size: 11px;
+}
+
+.story-nav-item[data-active] {
+  background: #e2eee9;
+  color: #115e4d;
+  font-weight: 600;
+}
+
+.story-main { flex: 1; min-width: 0; padding: 20px; }
+.story-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.story-title { display: block; color: var(--ss-text-strong); font-size: 15px; font-weight: 650; }
+.story-subtitle { display: block; margin-top: 4px; color: var(--ss-text-faint); font-size: 10px; }
+
+.story-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 22px 0 18px;
+}
+
+.story-metrics > div { padding: 12px; border: 1px solid var(--ss-line-faint); border-radius: 9px; background: #fff; }
+.story-metrics .ss-text { display: block; color: var(--ss-text-faint); font-size: 9px; }
+.story-metrics strong { display: block; margin-top: 7px; color: var(--ss-text-strong); font-size: 15px; letter-spacing: -0.02em; }
+
+.event-list { overflow: hidden; border: 1px solid var(--ss-line); border-radius: 10px; background: #fff; }
+.event-head, .event-row { display: grid; grid-template-columns: 1.55fr .65fr .65fr; align-items: center; column-gap: 10px; }
+.event-head { padding: 9px 12px; border-bottom: 1px solid var(--ss-line); color: var(--ss-text-faint); font-size: 9px; }
+.event-row { min-height: 48px; padding: 0 12px; border-bottom: 1px solid var(--ss-line-faint); color: var(--ss-text-faint); font-size: 10px; transition: background .25s ease, color .25s ease; }
+.event-row:last-child { border-bottom: 0; }
+.event-row[data-active] { background: #f1f8f5; color: var(--ss-text); }
+.event-name { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.event-name code { overflow: hidden; color: var(--ss-text); font: 9px/1.3 ui-monospace, SFMono-Regular, monospace; text-overflow: ellipsis; }
+.event-pulse { width: 7px; height: 7px; flex: none; border-radius: 50%; background: #d5dad7; transition: background .25s ease, box-shadow .25s ease; }
+.event-pulse[data-on] { background: #199673; box-shadow: 0 0 0 4px rgba(25, 150, 115, .11); }
+
+.story-phone {
+  position: absolute;
+  z-index: 3;
+  top: 92px;
+  right: var(--gutter);
+  box-shadow: var(--ss-shadow-satellite), 0 34px 60px -24px rgba(21, 61, 49, .48);
+}
+
+.story-notification { opacity: 0; transform: translateY(-10px) scale(.97); transition: opacity .32s ease, transform .42s cubic-bezier(.22, 1, .36, 1); }
+.story-notification[data-show] { opacity: 1; transform: translateY(0) scale(1); }
+
+.notification-story .ss-stage[data-layout='compact'] { --gutter: 16px; }
+.notification-story .ss-stage[data-layout='compact'] .story-sidebar { display: none; }
+.notification-story .ss-stage[data-layout='compact'] .story-window { width: 430px; left: 16px; }
+.notification-story .ss-stage[data-layout='compact'] .story-main { padding: 16px; }
+.notification-story .ss-stage[data-layout='compact'] .story-metrics { grid-template-columns: repeat(2, 1fr); }
+.notification-story .ss-stage[data-layout='compact'] .story-metrics > div:last-child { display: none; }
+.notification-story .ss-stage[data-layout='compact'] .story-phone { top: 156px; right: 12px; }

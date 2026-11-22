@@ -1,0 +1,4 @@
+import { Search } from 'lucide-react'
+export function EventsPage() {
+  return <section className="page-section"><div className="page-heading"><div><p className="page-kicker">Event stream</p><h1>Events</h1><p>Inspect every event received by the platform.</p></div></div><div className="table-toolbar"><label className="search-field"><Search size={16} /><span className="sr-only">Search events</span><input type="search" placeholder="Search by event type or ID" disabled /></label><button className="button button-quiet button-small" type="button" disabled>Filter</button></div><div className="content-card data-table-card"><div className="data-table-head"><span>Event</span><span>Platform</span><span>Status</span><span>Received</span></div><div className="empty-state table-empty"><span className="empty-state-mark" /><h2>No events yet</h2><p>Incoming events will appear here when the events API is enabled.</p></div></div></section>
+}
