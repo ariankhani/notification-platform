@@ -16,8 +16,8 @@ SessionDep = Annotated[AsyncSession, Depends(get_session)]
 
 
 async def get_current_user(
-    token: str = Depends(oauth2_scheme),
-    session: AsyncSession = Depends(get_session),
+    token: Annotated[str, Depends(oauth2_scheme)],
+    session: SessionDep,
 ) -> User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

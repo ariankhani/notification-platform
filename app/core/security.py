@@ -53,9 +53,9 @@ def create_access_token(
 
 
 def create_refresh_token(subject: str | int) -> str:
-    """Create a JWT refresh token with a longer lifespan (e.g., 7 days)."""
+    """Create a JWT refresh token using the configured lifespan."""
     now = datetime.now(UTC)
-    expire = now + timedelta(days=7)
+    expire = now + timedelta(minutes=settings.jwt_refresh_expiration_minutes)
 
     payload: dict[str, Any] = {
         "sub": str(subject),

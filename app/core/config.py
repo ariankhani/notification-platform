@@ -56,9 +56,14 @@ class Settings(BaseSettings):
     def validate_database_settings(self):
         url = make_url(self.database_url)
 
-        if url.drivername != "postgresql+psycopg":
+        supported_drivers = {
+            "postgresql+psycopg",
+            "sqlite",
+            "sqlite+aiosqlite",
+        }
+        if url.drivername not in supported_drivers:
             raise ValueError(
-                "DATABASE_URL must use postgresql+psycopg"
+                "DATABASE_URL must use postgresql+psycopg or SQLite"
             )
 
         if self.db_pool_size < 1:

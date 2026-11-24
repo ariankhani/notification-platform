@@ -1,11 +1,13 @@
-# app/api/endpoints/auth.py
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import (
     OAuth2PasswordRequestForm,
 )
+from jwt import PyJWTError
 from sqlmodel import select
 
-from app.core.deps import CurrentUserDep
+from app.core.deps import CurrentUserDep, SessionDep
 from app.core.security import (
     create_access_token,
     create_refresh_token,
@@ -13,7 +15,6 @@ from app.core.security import (
     hash_password,
     verify_password,
 )
-from app.db.dependencies import get_session
 from app.models.user import User
 from app.schemas.auth import Token
 from app.schemas.user import UserCreate, UserResponse
@@ -24,7 +25,7 @@ router = APIRouter(prefix="/auth", tags=["Authentication"])
 @router.post(
     path="/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED
 )
-async def register_user(user_in: UserCreate, session=Depends(get_session)):
+async def register_user(user_in: UserCreate, session: SessionDep):
     statement = select(User).where(
         (User.email == user_in.email) | (User.username == user_in.username)
     )
@@ -44,12 +45,10 @@ async def register_user(user_in: UserCreate, session=Depends(get_session)):
     return new_user
 
 
-router = APIRouter(prefix="/auth", tags=["Authentication"])
-
-
 @router.post("/login", response_model=Token)
 async def login(
-    form_data: OAuth2PasswordRequestForm = Depends(), session=Depends(get_session)
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    session: SessionDep,
 ):
     statement = select(User).where(User.username == form_data.username)
     result = await session.exec(statement)
@@ -73,7 +72,7 @@ async def login(
 
 
 @router.post("/refresh", response_model=Token)
-async def refresh_token(refresh_token: str, session=Depends(get_session)):
+async def refresh_token(refresh_token: str, session: SessionDep):
     try:
         payload = decode_jwt_token(refresh_token)
         if payload.get("type") != "refresh":
@@ -83,14 +82,20 @@ async def refresh_token(refresh_token: str, session=Depends(get_session)):
         if not user_id:
             raise HTTPException(status_code=401, detail="Invalid token")
 
-    except Exception:
-        raise HTTPException(status_code=401, detail="Invalid refresh token")
+    except (PyJWTError, ValueError, TypeError) as exc:
+        raise HTTPException(
+            status_code=401, detail="Invalid refresh token"
+        ) from exc
 
     statement = select(User).where(User.id == int(user_id))
     result = await session.exec(statement)
     user = result.first()
 
-    if not user or not verify_password(refresh_token, user.hashed_refresh_token):
+    if (
+        not user
+        or not user.hashed_refresh_token
+        or not verify_password(refresh_token, user.hashed_refresh_token)
+    ):
         raise HTTPException(status_code=401, detail="Invalid refresh token")
 
     new_access_token = create_access_token(subject=user.id)
@@ -108,7 +113,7 @@ async def refresh_token(refresh_token: str, session=Depends(get_session)):
 
 
 @router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
-async def logout(current_user: CurrentUserDep, session=Depends(get_session)):
+async def logout(current_user: CurrentUserDep, session: SessionDep):
     current_user.hashed_refresh_token = None
     session.add(current_user)
     await session.commit()
