@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from .models import NotificationStatus
 
@@ -34,6 +34,8 @@ class NotificationRuleUpdate(BaseModel):
 
 
 class NotificationRuleResponse(NotificationRuleBase):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     role_id: int
     created_at: datetime
@@ -52,6 +54,8 @@ class NotificationCreate(NotificationBase):
 
 
 class NotificationResponse(NotificationBase):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     event_id: int
     user_id: int
