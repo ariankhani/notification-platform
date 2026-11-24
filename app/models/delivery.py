@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 
 from sqlmodel import Field
 
@@ -10,4 +10,4 @@ class DeliveryAttempt(DeliveryAttemptBase, table=True):
 
     id: int | None = Field(default=None, primary_key=True)
     notification_id: int = Field(foreign_key="notifications.id")
-    attempted_at: datetime = Field(default_factory=datetime.utcnow)
+    attempted_at: datetime = Field(default_factory=lambda: datetime.now(UTC))

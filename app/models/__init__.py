@@ -1,39 +1,17 @@
-from app.schemas.delivery import (
-    AttemptStatus,
-    DeliveryAttemptBase,
-    DeliveryAttemptResponse,
-)
-from app.schemas.event import EventBase, EventCreate, EventResponse, EventStatus
-from app.schemas.notification import (
-    NotificationBase,
-    NotificationResponse,
-    NotificationRuleBase,
-    NotificationRuleCreate,
-    NotificationRuleResponse,
-    NotificationStatus,
-)
-from app.schemas.role import RoleBase, RoleCreate, RoleResponse, UserRoleAssign
-from app.schemas.user import UserBase, UserCreate, UserResponse
+"""Import every table model so SQLModel metadata is always complete."""
+
+from app.models.delivery import DeliveryAttempt
+from app.models.event import Event
+from app.models.role import Role, UserRole
+from app.models.user import User
+from app.modules.notifications.models import Notification, NotificationRule
 
 __all__ = [
-    "AttemptStatus",
-    "DeliveryAttemptBase",
-    "DeliveryAttemptResponse",
-    "EventBase",
-    "EventCreate",
-    "EventResponse",
-    "EventStatus",
-    "NotificationBase",
-    "NotificationResponse",
-    "NotificationRuleBase",
-    "NotificationRuleCreate",
-    "NotificationRuleResponse",
-    "NotificationStatus",
-    "RoleBase",
-    "RoleCreate",
-    "RoleResponse",
-    "UserBase",
-    "UserCreate",
-    "UserResponse",
-    "UserRoleAssign",
+    "DeliveryAttempt",
+    "Event",
+    "Notification",
+    "NotificationRule",
+    "Role",
+    "User",
+    "UserRole",
 ]

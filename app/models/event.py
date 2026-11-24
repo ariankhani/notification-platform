@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 
 from sqlmodel import Field
 
@@ -10,4 +10,4 @@ class Event(EventBase, table=True):
 
     id: int | None = Field(default=None, primary_key=True)
     status: EventStatus = Field(default=EventStatus.RECEIVED)
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
