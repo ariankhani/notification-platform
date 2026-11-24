@@ -114,3 +114,4 @@ venv.bak/
 # Test database
 test.db
 *.db-journal
+frontend/
